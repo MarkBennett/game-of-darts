@@ -1,0 +1,12 @@
+.reveal {
+	background-image: url('imgs/dart-logo.png');
+	background-repeat: no-repeat;
+	background-size: 5%;
+	background-position: 10% 90%;
+	transition: background-size 300ms, background-position 300ms;
+}
+
+.title .reveal {
+	background-size: 15%;
+	background-position: 17% 15%;
+}

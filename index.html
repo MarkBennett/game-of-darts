@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="title">
   <head>
     <title>Game of Darts</title>
     <link rel="stylesheet" href="components/reveal.js/css/reveal.css">
     <link rel="stylesheet" href="components/reveal.js/css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="styles/talk.css" id="theme">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="components/reveal.js/lib/css/zenburn.css">
@@ -11,11 +12,32 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>
+        <section data-state="title">
           <h1>Game of Darts</h1>
+        </section>
+        <section>
+          <h2>JavaScript is great but...</h2>
+        </section>
+        <section>
+          <ul>
+            <li>don't forget your vars, or</li>
+            <li>semicolons, or</li>
+            <li>this, or</li>
+            <li>===, or</li>
+            <li>no prototypical privacy</li>
+            <li>no lexical closures,</li>
+            <li>no namespaces,</li>
+            <li>no package sharing,</li>
+            <li>no dependency management</li>
+          </ul>
+        </section>
+        <section>
+          <h2>No stdlibs</h2>
+          <p>* There's a reason 60% of webpages include jQuery</p>
         </section>
       </div>
     </div>
+
     <script src="components/reveal.js/js/reveal.js"></script>
 
 		<script src="components/reveal.js/lib/js/head.min.js"></script>
