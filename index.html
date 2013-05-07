@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="title">
+<html>
   <head>
     <title>Game of Darts</title>
     <link rel="stylesheet" href="components/reveal.js/css/reveal.css">
@@ -23,7 +23,7 @@
             <li>don't forget your vars, or</li>
             <li>semicolons, or</li>
             <li>this, or</li>
-            <li>===, or</li>
+            <li>===</li>
             <li>no prototypical privacy</li>
             <li>no lexical closures,</li>
             <li>no namespaces,</li>
@@ -34,6 +34,284 @@
         <section>
           <h2>No stdlibs</h2>
           <p>* There's a reason 60% of webpages include jQuery</p>
+        </section>
+        <section>
+          <h2>So how does Dart fit in?</h2>
+        </section>
+        <section>
+          <h2>Familiar</h2>
+          <h2>Productive</h2>
+          <h2>Ubiquitous</h2>
+        </section>
+        <section>
+          <section>
+            <h2>Familiar<h2>
+          </section>
+          <section>
+            <pre><code>
+import 'dart:html';
+
+main() {
+  var msg = query('#msg');
+  var btn = new ButtonElement();
+  btn.text = 'Click me!';
+  btn.onClick.listen((e) => msg.text = 'Dart!');
+  document.body.children.add(btn);
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Insprired by</h2>
+            <ul>
+              <li>JavaScript</li>
+              <li>CoffeeScript</li>
+              <li>Ruby</li>
+              <li>Java</li>
+              <li>C#</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Short function definitions</h2>
+            <pre><code>
+// Who needs a function keyword?
+awesome(int num) {
+  return "$num MILLION DOLLARS!!!";
+};
+
+// One liner callbacks are easy
+var some = ((n) => "$num MILLION DOLLARS!!!");
+
+print(awesome(5));  // 5 MILLION DOLLARS!!!
+print(some(5));     // 5 MILLION DOLLARS!!!
+            </code></pre>
+          </section>
+          <section>
+            <h2>Lexical Closures</h2>
+            <pre><code>
+awesome() {
+  var a = "outside";
+  print a;              // outside
+
+  if (true) {
+    var a = "inside";
+
+    print a;            // inside
+  }
+  print a;              // outside
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Classes</h2>
+            <pre><code>
+class Sauce {
+  applyTo(meal) {
+    print("$meal, with sauce.");
+  }
+}
+
+class HotSauce {
+  applyTo(meal) {
+    print("$meal, with hot sauce. SPICY!");
+  }
+}
+
+new Sauce().applyTo("Burger");      // Burger, with sauce.
+new HotSauce().applyTo("Chips");    // Chips, with hot sauce. SPICY!
+            </code></pre>
+          </section>
+          <section>
+            <h2>Mixins</h2>
+            <pre><code>
+abstract class Sauce {
+  applyTo(meal) => throw "implement this";
+}
+
+abstract class Spicy {
+  warn() => print("Don't drink me!");
+}
+
+class HotSauce extends Sauce with Spicy {
+  applyTo(meal) => print("$meal, with hot sauce. SPICY!");
+}
+
+new HotSauce()
+  ..applyTo("Chips")    // Chips, with hot sauce. SPICY!
+  ..warn();             // Don't drink me!
+            </code></pre>
+          </section>
+          <section>
+            <h2>main() function</h2>
+            <pre><code>
+void main() {
+  print("It's like writing C again!");
+  print("No guessing which &lt;script&gt; tags are running code."); 
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Private methods</h2>
+            <pre><code>
+class SuperHero {
+  _real_identity;
+
+  SuperHero(real_identity) => _real_identity = real_identity;
+}
+
+// In another library
+var super_man = new SuperHero("Clark Kent");
+super_man._real_identity;                     // Private to library
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Productive</h2>
+          </section>
+          <section>
+            <h2>No variable hoisting</h2>
+            <pre><code>
+my_func() {
+  a = 0;      // Doesn't define window.a
+              // It just doesn't compile
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Functions without classes</h2>
+            <pre><code>
+i_have_no_class() {
+  print("rolling without any hommies.");
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Function closures include this</h2>
+            <pre><code>
+class MyHandler {
+  on_event_callback(e) {
+    // When this is called, this != window
+  }
+}
+
+handler = new MyHandler();
+btn.onClick.listen(handler.on_event_callback);
+            </code></pre>
+          </section>
+          <section>
+            <h2>Named function arguments</h2>
+            <pre><code>
+            </code></pre>
+          </section>
+          <section>
+            <h2>Method Cascades</h2>
+            <pre><code>
+var target = new MyClass();
+target
+  ..a()     // return ignored, equals target
+  ..b()     // return ignored, equals target
+  ..c();    // return ignored, equals target
+            </code></pre>
+          </section>
+          <section>
+            <h2>Constructor shortcuts</h2>
+            <pre><code>
+class Simple {
+  _name;
+  _description;
+
+  Simple(this._name, this._description);
+}
+
+void main() {
+  var simple = new Simple("Bob", "I'm awesome!");
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Named contructors</h2>
+            <pre><code>
+class Simple {
+  _name;
+  _description;
+
+  Simple(this._name, this._description);
+  Simple.withDefaults() {
+    _name = "Default";
+    _description = "No magic here.";
+  }
+}
+
+void main() {
+  var simple = new Simple.withDefaults();
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Factory methods</h2>
+            <pre><code>
+class Singleton {
+  static Singleton _singleton;
+
+  factory Singleton() {
+    if (_singleton == null) {
+      print("Creating singleton");      
+      _singleton = new Singleton._internal();
+    }
+    return _singleton;
+  }
+  Singleton._internal() { }
+}
+
+void main() {
+  var a = new Singleton(),    // Creating singleton
+      b = new Singleton();
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Robust Standard Library</h2>
+          </section>
+          <section>
+            <h2>Futures and Streams</h2>
+            <pre><code>
+future_worker() {
+  Completer completer = new Completer();
+  new Timer(const Duration(seconds: 1), () {
+    completer.complete("done!")
+  });
+
+  return completer.future;
+}
+
+future_worker().then((data) => print("In the future!")); 
+            </code></pre>
+          </section>
+          <section>
+            <h2>Isolates and Ports</h2>
+            <pre><code>
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Ubiquitous</h2>
+          </section>
+          <section>
+            <h2>Run the same code on:</h2>
+            <ul>
+              <li>Server</li>
+              <li>Browser</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Compile to JavaScript</h2>
+          </section>
+          <section>
+            <h2>Intrep with JavaScript</h2>
+            <pre><code>
+            </code></pre>
+          </section>
         </section>
       </div>
     </div>
