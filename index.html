@@ -33,7 +33,7 @@
         </section>
         <section>
           <h2>No stdlibs</h2>
-          <p>* There's a reason 60% of webpages include jQuery</p>
+          <p>* There's a reason 65% of webpages include jQuery</p>
         </section>
         <section>
           <h2>So how does Dart fit in?</h2>
@@ -163,6 +163,58 @@ var super_man = new SuperHero("Clark Kent");
 super_man._real_identity;                     // Private to library
             </code></pre>
           </section>
+          <section>
+            <h2>Optional, named and default params</h2>
+            <pre><code>
+setFlags({bool verbose: false, bool dry_run: false}) {
+  // use verbose and dry_run here
+}
+
+log(message, [Logger logger]) {
+  if (?logger) {
+    logger.log(message);
+  } else {
+    print(message);
+  }
+}
+
+void main() {
+  setFlags(dry_run: true);
+  log("Hello!");
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Typedefs</h2>
+            <pre><code>
+typedef int Compare(int a, int b);
+
+int sort(int a, int b) => a - b;
+
+main() {
+  assert(sort is Compare);  // True!
+}
+            </code></pre>
+          </section>
+          <section>
+            <h2>Metadata</h2>
+            <pre><code>
+import 'package:meta/meta.dart'; // Defines deprecated.
+
+class Television {
+  /// _Deprecated: Use [turnOn] instead._
+  @deprecated      // Metadata; makes Dart Editor warn about using activate().
+  void activate() {
+    turnOn();
+  }
+
+  /// Turns the TV's power on.
+  void turnOn() {
+    print('on!');
+  }
+} 
+            </code></pre>
+          </section>
         </section>
         <section>
           <section>
@@ -196,11 +248,6 @@ class MyHandler {
 
 handler = new MyHandler();
 btn.onClick.listen(handler.on_event_callback);
-            </code></pre>
-          </section>
-          <section>
-            <h2>Named function arguments</h2>
-            <pre><code>
             </code></pre>
           </section>
           <section>
@@ -273,7 +320,7 @@ void main() {
             <h2>Robust Standard Library</h2>
           </section>
           <section>
-            <h2>Futures and Streams</h2>
+            <h2>Futures</h2>
             <pre><code>
 future_worker() {
   Completer completer = new Completer();
@@ -288,9 +335,55 @@ future_worker().then((data) => print("In the future!"));
             </code></pre>
           </section>
           <section>
+            <h2>Streams</h2>
+            <pre><code>
+my_file.openRead().transform(new StringDecoder()).
+  listen((line) => print(line));
+
+btn.onClick.listen((evt) => print("Button Click!"));
+            </code></pre>
+          </section>
+          <section>
             <h2>Isolates and Ports</h2>
             <pre><code>
+import 'dart:isolate';
+
+echo() {
+  port.receive((msg, reply_port) {
+    reply_port.send('I received: $msg');
+  });
+}
+
+main() {
+  var send_port = spawnFunction(echo);
+  send_port.call('Hello from main').then((reply) {
+    print(reply);    // I received: Hello from main
+  });
+}
             </code></pre>
+          </section>
+          <section>
+            <h2>Libraries & Parts</h2>
+            <pre><code>
+// In ballgame.dart
+library ballgame;   // Declare that this is a library named ballgame.
+
+import 'dart:html'; // This app uses the HTML library.
+
+// Include other files in the library
+part 'ball.dart';
+part 'util.dart';
+
+// In ball.dart
+part of ballgame;
+
+// In your code
+import "package:ballgame";
+            </code></pre>
+          </section>
+          <section>
+          <h2>Go to the Pub</h2>
+          <h3>Standard package creation and sharing</h3>
           </section>
         </section>
         <section>
