@@ -403,6 +403,19 @@ import "package:ballgame";
           <section>
             <h2>Intrep with JavaScript</h2>
             <pre><code>
+// From Dart
+import 'package:js/js.dart' as js;
+
+var context = js.context;
+
+js.context.alert('Hello from Dart via JavaScript.');
+js.context.handler = new js.Callback.once(display);
+
+// From JavaScript
+var script = new ScriptElement();
+script.src
+ = 'http://search.twitter.com/search.json?q=dartlang&rpp=10&callback=handler';
+document.body.nodes.add(script);
             </code></pre>
           </section>
         </section>
