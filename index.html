@@ -202,20 +202,23 @@ main() {
           <section>
             <h2>Metadata</h2>
             <pre><code>
-import 'package:meta/meta.dart'; // Defines deprecated.
+import 'dart:mirrors';
 
-class Television {
-  /// _Deprecated: Use [turnOn] instead._
-  @deprecated      // Metadata; makes Dart Editor warn about using activate().
-  void activate() {
-    turnOn();
-  }
+class MyAnnotation {
+  final String note;
+  const MyAnnotation(this.note);
+}
 
-  /// Turns the TV's power on.
-  void turnOn() {
-    print('on!');
-  }
-} 
+@MyAnnotation('Go! Go! Gadget!')
+class Annotated {
+}
+
+main() {
+  ClassMirror mirror = reflectClass(Annotated);
+  String note = mirror.metadata.
+      where((a) => a.type.reflectedType == MyAnnotation).
+        first.reflectee.note;
+}
             </code></pre>
           </section>
         </section>
@@ -351,17 +354,16 @@ btn.onClick.listen((evt) => print("Button Click!"));
             <pre><code>
 import 'dart:isolate';
 
-echo() {
-  port.receive((msg, reply_port) {
-    reply_port.send('I received: $msg');
-  });
+runningInAnIsolate(SendPort replyTo) {
+  replyTo.send("Hello from the isolate!");
 }
 
 main() {
-  var send_port = spawnFunction(echo);
-  send_port.call('Hello from main').then((reply) {
-    print(reply);    // I received: Hello from main
-  });
+  ReceivePort port = new ReceivePort();
+  Isolate.spawn(runningInAnIsolate, port.sendPort);
+
+  port.listen((msg) => print(msg),
+              onDone: () => port.close());
 }
             </code></pre>
           </section>
@@ -391,6 +393,15 @@ import "package:ballgame";
           <section>
             <h2>Dart Editor</h2>
             <img src="images/dart-editor.webp" style="width: 70%">
+          </section>
+          <section>
+            <h2>Optional Types</h2>
+          </section>
+          <section>
+            <h2>Tree Shaking</h2>
+          </section>
+          <section>
+            <h2>VM Snapshots</h2>
           </section>
         </section>
         <section>
