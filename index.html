@@ -202,20 +202,23 @@ main() {
           <section>
             <h2>Metadata</h2>
             <pre><code>
-import 'package:meta/meta.dart'; // Defines deprecated.
+import 'dart:mirrors';
 
-class Television {
-  /// _Deprecated: Use [turnOn] instead._
-  @deprecated      // Metadata; makes Dart Editor warn about using activate().
-  void activate() {
-    turnOn();
-  }
+class MyAnnotation {
+  final String note;
+  const MyAnnotation(this.note);
+}
 
-  /// Turns the TV's power on.
-  void turnOn() {
-    print('on!');
-  }
-} 
+@MyAnnotation('Go! Go! Gadget!')
+class Annotated {
+}
+
+main() {
+  ClassMirror mirror = reflectClass(Annotated);
+  String note = mirror.metadata.
+      where((a) => a.type.reflectedType == MyAnnotation).
+        first.reflectee.note;
+}
             </code></pre>
           </section>
         </section>
