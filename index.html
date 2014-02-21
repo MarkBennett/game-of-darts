@@ -354,17 +354,16 @@ btn.onClick.listen((evt) => print("Button Click!"));
             <pre><code>
 import 'dart:isolate';
 
-echo() {
-  port.receive((msg, reply_port) {
-    reply_port.send('I received: $msg');
-  });
+runningInAnIsolate(SendPort replyTo) {
+  replyTo.send("Hello from the isolate!");
 }
 
 main() {
-  var send_port = spawnFunction(echo);
-  send_port.call('Hello from main').then((reply) {
-    print(reply);    // I received: Hello from main
-  });
+  ReceivePort port = new ReceivePort();
+  Isolate.spawn(runningInAnIsolate, port.sendPort);
+
+  port.listen((msg) => print(msg),
+              onDone: () => port.close());
 }
             </code></pre>
           </section>
