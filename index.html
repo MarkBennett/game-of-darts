@@ -55,7 +55,7 @@
 import 'dart:html';
 
 main() {
-  var msg = query('#msg');
+  var msg = querySelector('#msg');
   var btn = new ButtonElement();
   btn.text = 'Click me!';
   btn.onClick.listen((e) => msg.text = 'Dart!');
