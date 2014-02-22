@@ -421,19 +421,19 @@ import "package:ballgame";
           <section>
             <h2>Interop with JavaScript</h2>
             <pre><code>
-// From Dart
-import 'package:js/js.dart' as js;
+import 'dart:js' as js;
 
-var context = js.context;
+main() {
+  // Bind a Dart function to a JavaScript name
+  js.context["greeter"] = (name) => "Hello, from $name!";
 
-js.context.alert('Hello from Dart via JavaScript.');
-js.context.handler = new js.Callback.once(display);
+  // Call the JavaScript function we just bound
+  var greeting = js.context.callMethod("greeter", ["Dart"]);
+  print(greeting);
 
-// From JavaScript
-var script = new ScriptElement();
-script.src
- = 'http://search.twitter.com/search.json?q=dartlang&rpp=10&callback=handler';
-document.body.nodes.add(script);
+  // Call the same Dart function we bound, in JavaScript
+  // console.log(greeter("JavaScript"));
+}
             </code></pre>
           </section>
         </section>
