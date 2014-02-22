@@ -55,7 +55,7 @@
 import 'dart:html';
 
 main() {
-  var msg = query('#msg');
+  var msg = querySelector('#msg');
   var btn = new ButtonElement();
   btn.text = 'Click me!';
   btn.onClick.listen((e) => msg.text = 'Dart!');
@@ -82,7 +82,8 @@ awesome(int num) {
 };
 
 // One liner callbacks are easy
-var some = ((n) => "$num MILLION DOLLARS!!!");
+// Notice, the return is implied
+var some = (num) => "$num MILLION DOLLARS!!!";
 
 print(awesome(5));  // 5 MILLION DOLLARS!!!
 print(some(5));     // 5 MILLION DOLLARS!!!
@@ -252,18 +253,25 @@ class MyHandler {
   }
 }
 
-handler = new MyHandler();
-btn.onClick.listen(handler.on_event_callback);
+main() {
+  handler = new MyHandler();
+  btn.onClick.listen(handler.on_event_callback);
+}
             </code></pre>
           </section>
           <section>
             <h2>Method Cascades</h2>
             <pre><code>
-var target = new MyClass();
-target
-  ..a()     // return ignored, equals target
-  ..b()     // return ignored, equals target
-  ..c();    // return ignored, equals target
+class Person {
+  String name;
+  greet() => print("Hi, my name is $name!");
+}
+
+main() {
+  Person bob = new Person()
+    ..name = "Bob"
+    ..greet();               // "Hi, my name is Bob!"
+}
             </code></pre>
           </section>
           <section>
@@ -318,7 +326,7 @@ class Singleton {
 
 void main() {
   var a = new Singleton(),    // Creating singleton
-      b = new Singleton();
+      b = new Singleton();    // Same as the first!
 }
             </code></pre>
           </section>
@@ -331,19 +339,21 @@ void main() {
 future_worker() {
   Completer completer = new Completer();
   new Timer(const Duration(seconds: 1), () {
-    completer.complete("done!")
+    completer.complete("done!");
   });
 
   return completer.future;
 }
 
-future_worker().then((data) => print("In the future!")); 
+main() {
+  future_worker().then((data) => print("In the future!"));
+}
             </code></pre>
           </section>
           <section>
             <h2>Streams</h2>
             <pre><code>
-my_file.openRead().transform(new StringDecoder()).
+my_file.openRead().transform(new Latin1Decoder()).
   listen((line) => print(line));
 
 btn.onClick.listen((evt) => print("Button Click!"));
@@ -421,19 +431,19 @@ import "package:ballgame";
           <section>
             <h2>Interop with JavaScript</h2>
             <pre><code>
-// From Dart
-import 'package:js/js.dart' as js;
+import 'dart:js' as js;
 
-var context = js.context;
+main() {
+  // Bind a Dart function to a JavaScript name
+  js.context["greeter"] = (name) => "Hello, from $name!";
 
-js.context.alert('Hello from Dart via JavaScript.');
-js.context.handler = new js.Callback.once(display);
+  // Call the JavaScript function we just bound
+  var greeting = js.context.callMethod("greeter", ["Dart"]);
+  print(greeting);
 
-// From JavaScript
-var script = new ScriptElement();
-script.src
- = 'http://search.twitter.com/search.json?q=dartlang&rpp=10&callback=handler';
-document.body.nodes.add(script);
+  // Call the same Dart function we bound, in JavaScript
+  // console.log(greeter("JavaScript"));
+}
             </code></pre>
           </section>
         </section>
