@@ -11,6 +11,6 @@
 	background-position: 17% 15%;
 }
 
-h1, h2, h3, h4 {
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 	font-family: 'Montserrat', sans-serif;
 }
